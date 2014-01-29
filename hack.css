@@ -1,0 +1,139 @@
+/* student and shared */
+
+.kingsnake
+{
+	font-family: open-sans, sans-serif;
+	font-size:28px;
+	color:#222;
+}
+.kingsnake .quiz_video_holder
+{
+	width:640px;
+	height:360px;	
+	position:relative;
+}
+.kingsnake .overlay
+{
+	background-color:rgba(255,255,255,0.95);
+	position:absolute;
+	top:0;
+	width:80%;
+	height:100%;
+	z-index:1;
+	padding:0 10%;
+}
+.kingsnake .question_inner
+{
+	position:absolute;
+	top:245px;
+	left:10%;	
+	width:80%;
+	z-index:2;
+	font-size:24px;	
+}
+.kingsnake .angle
+{
+	text-align:center;
+	background-color:#e4e1dd;	
+}
+.kingsnake .angle:before 
+{
+    content: '';
+    line-height: 0;
+    font-size: 0;
+    width: 0;
+    height: 0;
+    border-top: 32px solid transparent;
+    border-bottom: 28px solid #e4e1dd;
+    border-left: 30px solid transparent;
+    border-right: 0px solid #e4e1dd;
+    position: absolute;
+    top: -32px;
+    left: -4px;
+}
+.kingsnake .angle:after
+{
+	content: '';
+    line-height: 0;
+    font-size: 0;
+    width: 0;
+    height: 0;
+    border-top: 28px solid #e4e1dd;
+    border-bottom: 30px solid transparent;
+    border-left: 0px solid transparent;
+    border-right: 30px solid transparent;
+    position: absolute;
+    top: 0;
+    right: -4px;	
+}
+.kingsnake .question
+{
+	width:90%;
+	margin-left:5%;
+}
+.kingsnake .question_inner ul
+{
+	list-style:none;	
+	margin-top:10px;
+	margin-left:-5%;
+}
+.kingsnake .question_inner li
+{
+	width:45%;	
+	float:left;
+	margin:0 5% 15px 0;
+}
+.kingsnake .question_inner li:hover
+{
+	background-color:#afa593;	
+	cursor:pointer;
+}
+.kingsnake .question_inner .red
+{
+	background-color:#882345;	
+}
+.kingsnake .question_inner .green
+{
+	background-color:#80A966;
+}
+
+.truncate 
+{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* prof  */
+.kingsnake .prof_question_inner
+{
+	position:absolute;
+	top:150px;
+	left:10%;	
+	width:80%;
+	z-index:2;
+	font-size:24px;	
+}
+.kingsnake textarea
+{
+	width:100%	
+}
+.kingsnake .prof_answers
+{
+	margin-left:-5%;
+}
+.kingsnake .prof_answers input
+{
+	width:44%;
+	margin-left:5%;	
+}
+.kingsnake .submit
+{
+	float:right;
+	background-color:#e4e1dd;
+	cursor:pointer;	
+}
+.kingsnake .submit:hover
+{
+	background-color:#afa593;
+}

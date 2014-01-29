@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Student Video</title>
+</head>
+
+<body>
+<link rel="stylesheet" href="hack.css" type="text/css">
+<div class="kingsnake">
+    <div class="quiz_video_holder">
+        <img src="fake_vid.png" />
+        <div class="question_holder"></div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
+// ensure there will be no conflicts with the old learning studio jquery
+jQuery.noConflict();
+</script>
+<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+// assign new jquery to $$
+$$ = jQuery.noConflict();
+
+// sub global self-initializer
+(function(window, $)
+{
+	// declare all variables
+	var video_interval;				// interval to fake the video 
+	var video_play;					// function to simulate video play
+	var video_loc;					// current play location of the video
+	var video_length;				// length of the video [seconds]
+	var quiz_handler;				// function to handle the quiz questions
+	var quiz_data;					// object containing questions and their location within the video
+	var quiz_results;				// array contianing whether or not the student got the answer correct
+	var quiz_attempts;				// number of attempts on a given question
+	var quiz_score;					// function to add the student's score on the quiz
+	
+	quiz_handler = function(video_loc)
+	{
+		var answer_randomizer;		// function to randomize the answers, create <li> elements and set the correct answer
+		var correct_answer;			// the location where the correct answer will be stored
+		
+		answer_randomizer = function(questions)
+		{
+			var contains;			// function to determine if an array contains a value
+			
+			contains = function(arr, element)
+			{
+				return arr[element] > -1;
+			};
+			
+			// initialize
+			var len = questions.length;
+			var html = '';
+			var ans_arr = [];
+			for (var i = 0; i < questions.length; i++)
+				ans_arr.push(-1);
+			
+			// randomize the answers 
+			for (var i = 0; i < len; i++)
+			{
+				while (true)
+				{
+					// generate a random index
+					var indx = Math.floor(Math.random() * len);
+					
+					// check to see if this is contained in the index
+					if (!contains(ans_arr, indx))
+					{
+						// place the answer in the answer array
+						ans_arr[indx] = i;						
+						
+						// if this is the first, then this would be the correct answer
+						if (i == 0)
+							correct_answer = indx;
+							
+						break;	
+					}
+				}
+			}
+			
+			// create the answer html
+			for (var i = 0; i < ans_arr.length; i++)
+				html += '<li class="angle truncate">' + questions[ans_arr[i]] + '</li>';
+			return html;
+		};
+		
+		// iterate over question array
+		for (var i = 0; i < quiz_data.length; i++)	
+		{
+			// check to see if there is a question here
+			if (quiz_data[i][0] == video_loc)	
+			{
+				// there is a question that should be asked at this location
+				
+				// stop the video
+				clearInterval(video_interval);
+				
+				// ask the question
+				
+				// add the question text
+				var html = '<div class="overlay">&nbsp;</div><div class="question_inner"><div class="question angle truncate">' + quiz_data[i][1] + '</div><ul>';
+				
+				// randomize the answers
+				html += answer_randomizer(quiz_data[i][2]);
+				
+				// add the answers -- place holder until answer_randomizer works
+				//for (var j = 0; j < quiz_data[i][2].length; j++)
+				//	html += '<li>' + quiz_data[i][2][j] + '</li>';
+				//correct_answer = 0;	
+				
+				// add the html	
+				$('.question_holder').html(html + '</ul></div></div>');	
+				
+				// attach handlers
+				$('.question_holder').on('click', 'li', function()
+				{									
+					if ($(this).index() == correct_answer)
+					{
+						// determine if this was the correct answer
+						if (quiz_attempts == 0)
+							quiz_results.push(1);
+						else
+							quiz_results.push(0);	
+						
+						$(this).addClass('green');
+						
+						setTimeout(function()
+						{
+							// reset
+							$('.question_holder').off();
+							$('.question_holder').html('');
+							quiz_attempts = 0;
+							
+							video_interval = setInterval(video_play, 1000);
+						}, 2000);
+					}
+					else
+					{
+						quiz_attempts++;
+						$(this).addClass('red');
+					}
+				});												
+			}
+		}
+	}	
+	
+	video_play = function()
+	{
+		if (video_loc < video_length)
+		{
+			quiz_handler(++video_loc);
+		}
+		else
+		{
+			clearInterval(video_interval);	
+			quiz_score();		
+		}
+	}
+	
+	quiz_score = function()
+	{
+		var sum = 0;
+		for (var i = 0; i < quiz_results.length; i++)
+			sum += parseInt(quiz_results[i], 10);
+		
+		var score = ((sum / quiz_results.length) * 100).toFixed(0);
+		
+		$('<div>Score: <strong>' + score + '%</strong></div>').appendTo('body');	
+	}
+	
+	// initialize
+	video_loc = 0;
+	video_length = 5;	
+	quiz_data = [[42, "Which of these is a snake? ", ["Python", "A Horse", "Zdeno Chara", "Hackday"]], [80, "The Chicago Blackhawks most resemble a...", ["Cobra", "Rattle Snake", "King Snake", "A Horse"]], [90, "King-Snake Wistia App won Hackday in 2013? ", ["True", "False", "False", "False"]]];
+	quiz_results = [];
+	quiz_attempts = 0;
+	
+	video_interval = setInterval(video_play, 1000);
+	
+})(window,$$);	
+</script>
+
+</html>

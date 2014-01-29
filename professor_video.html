@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Professor Video</title>
+</head>
+
+<body>
+<link rel="stylesheet" href="hack.css" type="text/css">
+
+<div class="insert_question">insert question!</div>
+
+
+<div class="kingsnake">
+    <div class="quiz_video_holder">
+        <img src="fake_vid.png" />
+        <div class="question_holder"></div>
+    </div>
+</div>
+<ul class="errors"></ul>
+
+</body>
+
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
+// ensure there will be no conflicts with the old learning studio jquery
+jQuery.noConflict();
+</script>
+<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+// assign new jquery to $$
+$$ = jQuery.noConflict();
+
+// sub global self-initializer
+(function(window, $)
+{	
+	// declare all variables
+	var video_interval;				// interval to fake the video 
+	var video_play;					// function to simulate video play
+	var video_loc;					// current play location of the video
+	var video_length;				// length of the video [seconds]
+	var quiz_data;					// object containing questions and their location within the video	
+		
+	$('.insert_question').on('click', function()
+	{
+		// professor would like to insert a question here
+		
+		if (video_loc < video_length)
+		{
+			// declare some vars 
+			var any;					// function to check if any of the input match a criteria
+			
+			any = function(arr, criteria)
+			{
+				if (arr == null || arr.length == 0)
+					return 0;
+				
+				var matches = 0;
+					
+				for (var i = 0; i < arr.length; i++)
+					if ($(arr[i]).val() != criteria)
+						matches++;
+						
+				return matches;			
+			};
+			
+			// pause the video
+			clearInterval(video_interval);
+			
+			// display the inputs		
+			$('.question_holder').html('<div class="overlay">&nbsp;</div><div class="prof_question_inner"><textarea class="question_text" placeholder="type your question here..." rows="2"/><div class="prof_answers"><input class="correct" type="text" placeholder="correct answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /></div><input class="submit" type="submit" /></div>').fadeIn(500);
+			
+			// attach the handler
+			$('.submit').on('click', function()
+			{
+				$('ul').html('');
+				
+				// get the vars
+				var question_text = $('.question_text');
+				var correct = $('.correct');
+				var incorrect = $('.incorrect');
+				
+				// validate the question
+				if ($(question_text).val() != '' && $(correct).val() != '' && any(incorrect, ''))
+				{
+					// success!
+					
+					// extract to array	
+					var question_data = [video_loc, $(question_text).val(), [$(correct).val()]];
+					for (var i = 0; i < incorrect.length; i++)
+					{
+						// make sure there is text in this
+						if ($(incorrect[i]).val() != '')
+							question_data[2].push($(incorrect[i]).val());
+					}
+						
+					// add question to the quiz data	
+					quiz_data.push(question_data);
+					
+					// display success
+					$('.question_holder').fadeOut(500, function()
+					{
+						$(this).text('Successfully saved question').fadeIn(250,
+						function()
+						{
+							setTimeout(function()
+							{
+								$('.question_holder').fadeOut(250, function()
+								{
+									video_interval = setInterval(video_play, 1000);
+								});
+							}, 500);
+						});
+					});
+				}
+				else
+				{
+					var html = '';
+					if ($(question_text).val() == '')
+						$('ul').append('<li>Question text cannot be blank.</li>'); 	
+					if ($(correct).val() == '')
+						$('ul').append('<li>Correct answer text cannot be blank.</li>'); 
+					if (!any(incorrect, ''))
+						$('ul').append('<li>There must be at least one non-blank incorrect answer.</li>');	
+				}
+			});		
+		}
+	});
+		
+	video_play = function()
+	{
+		if (video_loc < video_length)
+		{
+			++video_loc;
+			$('.current').text(video_loc);
+		}
+		else
+		{
+			clearInterval(video_interval);	
+			console.log(quiz_data);	
+		}
+	};
+	
+	// initialize
+	video_loc = 0;
+	video_length = 5;	
+	video_interval = setInterval(video_play, 1000);
+	
+	quiz_data = [];
+	
+})(window, $$);
+</script>
+</html>
