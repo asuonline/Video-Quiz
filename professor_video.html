@@ -1,154 +1,681 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Professor Video</title>
+<title>Hackday 101: KingSnake Wistia Professor Video</title>
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,300&amp;subset=latin">
+<style>
+	.progc
+	{
+		height: 16px;
+		overflow: hidden;
+		font-family: 'Open Sans', sans-serif;
+		position: relative;
+		top: -74px;
+		font-size: 12px;
+	}
+	
+	.progi
+	{
+		background-color: #383838;
+		text-align: right;
+		color: #FFF;
+		font-family: 'Open Sans', sans-serif;
+		padding: 0 5px;
+	}
+	
+	.progt
+	{
+		float: left;
+		background-color: #990033;
+		width: 0;
+		text-align: right;
+		color: #FFF;
+		font-family: 'Open Sans', sans-serif;
+		font-size: 12px;
+		padding: 0 5px;
+	}
+	
+	.controls
+	{
+		padding: 0;
+		margin: 0;
+		background: #AFA593;
+		height: 50px;
+		position: relative;
+		top: -70px;
+		z-index:1000;
+	}
+	
+	.controls li
+	{
+		float:left;
+		cursor:pointer;
+	}
+	
+	.controls .playing
+	{
+		height:50px;
+		width:57px;
+		
+		background-image: url('img/pause.png');
+	}
+	
+	.controls .paused
+	{
+		height:50px;
+		width:57px;
+		
+		background-image: url('img/play.png');
+	}
+	
+	.pctrl
+	{
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		
+		height:50px;
+		width:50px;
+		
+		background-image: url('img/play.png');
+	}
+	
+	.rctrl
+	{
+		margin-left:10px;
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		
+		height:50px;
+		width:70px;
+		
+		background-image: url('img/rewind.png');
+	}
+	
+	.sctrl
+	{
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		
+		height:50px;
+		width:56px;
+		
+		background-image: url('img/rewind30.png');
+	}
+	
+	.s
+	{
+		list-style:none;
+		width:286px;
+		text-align:center;
+	}
+	
+	.s a
+	{
+		text-decoration:none;
+		color: #FFF;
+		font-family: 'Open Sans', sans-serif;
+		font-weight:600;
+		font-size: 28px;
+		line-height: 47px;
+	}
+	
+	.v
+	{
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		
+		height:50px;
+		width:85px;
+		
+		background-image: url('img/volumefull.png');
+	}
+	
+	.qctrl
+	{
+		display:none;
+		
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		
+		height:50px;
+		width:58px;
+		
+		background-image: url('img/question.png');
+	}
+	
+	.fctrl
+	{
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		
+		height:50px;
+		width:74px;
+		
+		background-image: url('img/fullscreen.png');
+	}
+	/* student and shared */
+
+.kingsnake
+{
+	font-family: open-sans, sans-serif;
+	font-size:28px;
+	color:#222;
+}
+.kingsnake .quiz_video_holder
+{
+	width:640px;
+	height:360px;	
+	position:relative;
+}
+.kingsnake .overlay
+{
+	background-color:rgba(255,255,255,0.95);
+	position:absolute;
+	top:0;
+	width:80%;
+	height:100%;
+	z-index:1;
+	padding:0 10%;
+}
+.kingsnake .question_inner
+{
+	position:absolute;
+	top:245px;
+	left:10%;	
+	width:80%;
+	z-index:2;
+	font-size:24px;	
+}
+.kingsnake .angle
+{
+	text-align:center;
+	background-color:#e4e1dd;	
+}
+.kingsnake .angle:before 
+{
+    content: '';
+    line-height: 0;
+    font-size: 0;
+    width: 0;
+    height: 0;
+    border-top: 32px solid transparent;
+    border-bottom: 28px solid #e4e1dd;
+    border-left: 30px solid transparent;
+    border-right: 0px solid #e4e1dd;
+    position: absolute;
+    top: -32px;
+    left: -4px;
+}
+.kingsnake .angle:after
+{
+	content: '';
+    line-height: 0;
+    font-size: 0;
+    width: 0;
+    height: 0;
+    border-top: 28px solid #e4e1dd;
+    border-bottom: 30px solid transparent;
+    border-left: 0px solid transparent;
+    border-right: 30px solid transparent;
+    position: absolute;
+    top: 0;
+    right: -4px;	
+}
+.kingsnake .question
+{
+	width:90%;
+	margin-left:5%;
+}
+.kingsnake .question_inner ul
+{
+	list-style:none;	
+	margin-top:10px;
+	margin-left:-5%;
+}
+.kingsnake .question_inner li
+{
+	width:45%;	
+	float:left;
+	margin:0 5% 15px 0;
+}
+.kingsnake .question_inner li:hover
+{
+	background-color:#afa593;	
+	cursor:pointer;
+}
+.kingsnake .question_inner .red
+{
+	background-color:#882345;	
+}
+.kingsnake .question_inner .green
+{
+	background-color:#80A966;
+}
+
+.truncate 
+{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* prof  */
+.kingsnake .prof_question_inner
+{
+	position:absolute;
+	top:150px;
+	left:10%;	
+	width:80%;
+	z-index:2;
+	font-size:24px;	
+}
+.kingsnake textarea
+{
+	width:100%	
+}
+.kingsnake .prof_answers
+{
+	margin-left:-5%;
+}
+.kingsnake .prof_answers input
+{
+	width:44%;
+	margin-left:5%;	
+}
+.kingsnake .submit
+{
+	float:right;
+	background-color:#e4e1dd;
+	cursor:pointer;	
+}
+.kingsnake .submit:hover
+{
+	background-color:#afa593;
+}
+.kingsnake
+{
+	position: absolute;
+	top: 0;
+	overflow:hidden;
+}
+.wistia_label {
+	width:100px;
+}
+
+.insert_question
+{
+	margin-top:25px;
+	width:200px;
+	background-color:#e4e1dd;
+	padding:15px;
+	text-align:center;
+	font-size:18px;
+}
+.insert_question:hover
+{
+	cursor:pointer;
+	background-color:#afa593;
+}
+
+	</style>
 </head>
-
 <body>
-<link rel="stylesheet" href="hack.css" type="text/css">
 
-<div class="insert_question">insert question!</div>
+<div id="wistia_n8q49kbnff" class="wistia_embed" style="width:640px;height:360px;"> </div>
 
+<div class="wistia_inputs"><span class="wistia_label">Enter Wistia ID: </span><input type="text" class="wistia_id" /><input type="submit" class="submit"/></div>
 
-<div class="kingsnake">
-    <div class="quiz_video_holder">
-        <img src="fake_vid.png" />
-        <div class="question_holder"></div>
-    </div>
-</div>
+<div class="insert_question" style="display:none;clear:both">insert question!</div>
 <ul class="errors"></ul>
 
 </body>
-
-<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script charset="ISO-8859-1" src="http://fast.wistia.com/assets/external/E-v1.js"></script>
+<script type="text/javascript">
+  WebFontConfig = {
+    google: { families: [ 'Open+Sans:400,600,300:latin' ] }
+  };
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })(); </script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.min.js"></script>
 <script type="text/javascript">
 // ensure there will be no conflicts with the old learning studio jquery
 jQuery.noConflict();
 </script>
-<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
 // assign new jquery to $$
 $$ = jQuery.noConflict();
 
-// sub global self-initializer
-(function(window, $)
-{	
-	// declare all variables
-	var video_interval;				// interval to fake the video 
-	var video_play;					// function to simulate video play
-	var video_loc;					// current play location of the video
-	var video_length;				// length of the video [seconds]
-	var quiz_data;					// object containing questions and their location within the video	
+$$('.submit').on('click', function()
+{
+	// sub global self-initializer
+	(function(window, $, vid)
+	{	
+		//change display:
+		$('.insert_question').show();
+		$('.wistia_inputs').hide();
+	
+	
+		// declare all variables
+		var quiz_data;					// object containing questions and their location within the video	
+		var ended;						// bool to show that the video is done
+		var print_data;
 		
-	$('.insert_question').on('click', function()
-	{
-		// professor would like to insert a question here
-		
-		if (video_loc < video_length)
+		wistiaEmbed = Wistia.embed(vid,
 		{
-			// declare some vars 
-			var any;					// function to check if any of the input match a criteria
+			platformPreference: 'html5',
+			controlsVisibleOnLoad: false,
+			fullscreenButton: false,
+			playButton: false,
+			playbar: false,
+			volumeControl: false,
+			smallPlayButton: false
+		});
+		
+		wistiaEmbed.ready(function()
+		{	
+			$('.controls').hide();
+			$('.progc').hide();
 			
-			any = function(arr, criteria)
+			$('#wistia_' + vid + ' .progi').text(secondsToTime(wistiaEmbed.duration()));
+			
+			$('#wistia_' + vid + ' ul li.s').data('speed', 1);
+			
+			$('#wistia_' + vid + ' ul li.v').data('vol', 1);
+			wistiaEmbed.volume(1);
+			
+			$('#wistia_' + vid + ' ul').on( "click", "li.pctrl", function()
 			{
-				if (arr == null || arr.length == 0)
-					return 0;
-				
-				var matches = 0;
+				if($(this).hasClass('playing'))
+					wistiaEmbed.pause();
 					
-				for (var i = 0; i < arr.length; i++)
-					if ($(arr[i]).val() != criteria)
-						matches++;
-						
-				return matches;			
-			};
-			
-			// pause the video
-			clearInterval(video_interval);
-			
-			// display the inputs		
-			$('.question_holder').html('<div class="overlay">&nbsp;</div><div class="prof_question_inner"><textarea class="question_text" placeholder="type your question here..." rows="2"/><div class="prof_answers"><input class="correct" type="text" placeholder="correct answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /></div><input class="submit" type="submit" /></div>').fadeIn(500);
-			
-			// attach the handler
-			$('.submit').on('click', function()
-			{
-				$('ul').html('');
-				
-				// get the vars
-				var question_text = $('.question_text');
-				var correct = $('.correct');
-				var incorrect = $('.incorrect');
-				
-				// validate the question
-				if ($(question_text).val() != '' && $(correct).val() != '' && any(incorrect, ''))
-				{
-					// success!
-					
-					// extract to array	
-					var question_data = [video_loc, $(question_text).val(), [$(correct).val()]];
-					for (var i = 0; i < incorrect.length; i++)
-					{
-						// make sure there is text in this
-						if ($(incorrect[i]).val() != '')
-							question_data[2].push($(incorrect[i]).val());
-					}
-						
-					// add question to the quiz data	
-					quiz_data.push(question_data);
-					
-					// display success
-					$('.question_holder').fadeOut(500, function()
-					{
-						$(this).text('Successfully saved question').fadeIn(250,
-						function()
-						{
-							setTimeout(function()
-							{
-								$('.question_holder').fadeOut(250, function()
-								{
-									video_interval = setInterval(video_play, 1000);
-								});
-							}, 500);
-						});
-					});
-				}
 				else
-				{
-					var html = '';
-					if ($(question_text).val() == '')
-						$('ul').append('<li>Question text cannot be blank.</li>'); 	
-					if ($(correct).val() == '')
-						$('ul').append('<li>Correct answer text cannot be blank.</li>'); 
-					if (!any(incorrect, ''))
-						$('ul').append('<li>There must be at least one non-blank incorrect answer.</li>');	
-				}
-			});		
+					wistiaEmbed.play();
+			});
+			
+			 $('#wistia_' + vid).on( "mouseenter", function()
+			 {
+				  $('.controls').stop().fadeIn();
+					$('.progc').stop().fadeIn();
+			 }).on( "mouseleave", function()
+			 {
+				 $('.controls').stop().fadeOut();
+					$('.progc').stop().fadeOut();
+			 });
+			
+			$('#wistia_' + vid + ' ul').on( "click", "li.rctrl", function()
+			{
+				wistiaEmbed.time(0);
+			});
+			
+			$('#wistia_' + vid + ' ul').on( "click", "li.s", function()
+			{
+				var video = $('#wistia_' + vid).find('video')[0];
+				var current = $('#wistia_' + vid + ' ul li.s').data('speed');
+				
+				if(current == 1)
+					current = 1.3;
+				else if(current == 1.3)
+					current = 1.5;
+				else if(current == 1.5)
+					current = 1.7;
+				else if(current == 1.7)
+					current = 2;
+				else
+					current = 1;
+				
+				$('#wistia_' + vid + ' ul li.s').data('speed', current);
+				
+				video.playbackRate = current;
+				$(this).find('a').text('SPEED x' + current);
+			});
+			
+			$('#wistia_' + vid + ' ul').on( "click", "li.v", function()
+			{
+				var current = $('#wistia_' + vid + ' ul li.v').data('vol');
+				
+				if(current == 1)
+					current = .7;
+				else if(current == .7)
+					current = .35;
+				else if(current == .35)
+					current = 0;
+				else
+					current = 1;
+				
+				$('#wistia_' + vid + ' ul li.v').data('vol', current);
+				
+				wistiaEmbed.volume(current);
+			});
+			
+			$('#wistia_' + vid + ' ul').on( "click", "li.sctrl", function()
+			{
+				var a = wistiaEmbed.time() - 30;
+				wistiaEmbed.time((a < 0) ? 0 : a);
+			});
+			
+			$('#wistia_' + vid + ' ul').on( "click", "li.fctrl", function()
+			{
+				var video = $('#wistia_' + vid).find('video')[0];
+				
+				// Webkit for video elements only
+				video.webkitEnterFullscreen();
+			});
+			
+			// for progress bar
+			wistiaEmbed.bind("secondchange", function (s)
+			{
+				var pp = playPercent(s);
+				
+				$('.progt').css('width', ((pp == 0) ? 1 : pp) +'%');
+				$('.progt').text(secondsToTime(s));
+				
+				video_loc = s;
+			});
+			
+			// detect play mode
+			wistiaEmbed.bind("play", function (s)
+			{
+				$('#wistia_' + vid + ' ul li.pctrl').addClass('playing').removeClass('paused');
+			});
+			
+			// detect pause mode
+			wistiaEmbed.bind("pause", function (s)
+			{
+				$('#wistia_' + vid + ' ul li.pctrl').addClass('paused').removeClass('playing');
+			});
+		});
+			
+		function secondsToTime(secs)
+		{
+			var hours = Math.floor(secs / (60 * 60));
+		   
+			var divisor_for_minutes = secs % (60 * 60);
+			var minutes = Math.floor(divisor_for_minutes / 60);
+		 
+			var divisor_for_seconds = divisor_for_minutes % 60;
+			var seconds = Math.ceil(divisor_for_seconds);
+			
+			return ((hours>0)?(hours + ':') : '') + minutes + ':' + ((seconds<10) ? '0' : '') + seconds;
 		}
-	});
 		
-	video_play = function()
-	{
-		if (video_loc < video_length)
+		function playPercent(secs)
 		{
-			++video_loc;
-			$('.current').text(video_loc);
+			return Math.floor((secs / wistiaEmbed.duration()) * 100);
 		}
-		else
+		
+		$('#wistia_' + vid).append('<div class="kingsnake"><div class="quiz_video_holder"><div class="question_holder"></div></div></div><div class="progc"><div class="progt"></div><div class="progi"></div></div><ul class="controls"><li class="pctrl"><a href="#">Play</a></li><li class="rctrl"><a href="#">Start Over</a></li><li class="qctrl"><a href="#">Question</a></li><li class="s"><a href="#">SPEED x1</a></li><li class="sctrl"><a href="#">30 Second Rewind</a></li><li class="v"><a href="#">Volume (100%)</a></li><li class="fctrl"><a href="#">Fullscreen</a></li></ul>');
+		
+		wistiaEmbed.bind("end", function ()
 		{
-			clearInterval(video_interval);	
-			console.log(quiz_data);	
+			ended = true;
+			print_data();
+		});
+
+		print_data = function()
+		{
+			var html = '<div class="prof_input_questions"><h1>Video Questions</h1><ul>';
+			
+			// display the questions
+			for (var i = 0; i < quiz_data.length; i++)
+			{
+				html += '<li>'
+				html += '<p>Timestamp: ' + quiz_data[i][0] + ' [seconds]</p>';
+				html += '<p>Question: ' + quiz_data[i][1] + '</p>';
+				
+				html += '<ul>';
+				
+				for (var j = 0; j < quiz_data[i][2].length; j++)
+				{
+					if (j == 0)
+						html += '<li><p class="prof_correct">' + quiz_data[i][2] + '</p></li>';
+					else	
+						html += '<li class="prof_incorrect">' + quiz_data[i][3][j] + '</li>';
+				}
+				html += '</ul></li>';
+			
+			}
+			html += '</ul></div>';
+			
+			$(html).appendTo('body');
+		
 		}
-	};
-	
-	// initialize
-	video_loc = 0;
-	video_length = 5;	
-	video_interval = setInterval(video_play, 1000);
-	
-	quiz_data = [];
-	
-})(window, $$);
+		
+		$('.insert_question').on('click', function()
+		{
+			// professor would like to insert a question here
+			
+			if (!ended)
+			{
+				// declare some vars 
+				var any;					// function to check if any of the input match a criteria
+				
+				any = function(arr, criteria)
+				{
+					if (arr == null || arr.length == 0)
+						return 0;
+					
+					var matches = 0;
+						
+					for (var i = 0; i < arr.length; i++)
+						if ($(arr[i]).val() != criteria)
+							matches++;
+							
+					return matches;			
+				};
+				
+				// pause the video
+				wistiaEmbed.pause();
+				
+				// hide controls
+			 	$('.controls').stop().fadeOut();
+		   		$('.progc').stop().fadeOut();
+				$('#wistia_' + vid).off("mouseenter").off("mouseleave");
+
+				
+				// display the inputs		
+				$('.question_holder').html('<div class="overlay">&nbsp;</div><div class="prof_question_inner"><textarea class="question_text" placeholder="type your question here..." rows="2"/><div class="prof_answers"><input class="correct" type="text" placeholder="correct answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /><input class="incorrect" type="text" placeholder="incorrect answer here" /></div><input class="submit" type="submit" /></div>').fadeIn(500);
+				
+				// attach the handler
+				$('.submit').on('click', function()
+				{
+					$('ul.errors').html('');
+					
+					// get the vars
+					var question_text = $('.question_text');
+					var correct = $('.correct');
+					var incorrect = $('.incorrect');
+					
+					// validate the question
+					if ($(question_text).val() != '' && $(correct).val() != '' && any(incorrect, ''))
+					{
+						// success!
+						
+						// extract to array	
+						var question_data = [video_loc, $(question_text).val(), [$(correct).val()]];
+						for (var i = 0; i < incorrect.length; i++)
+						{
+							// make sure there is text in this
+							if ($(incorrect[i]).val() != '')
+								question_data[2].push($(incorrect[i]).val());
+						}
+							
+						// add question to the quiz data	
+						quiz_data.push(question_data);
+						
+						// overwrite local storage
+						window['localStorage']['hackday'] = JSON.stringify(quiz_data);
+
+						// display success
+						$('.question_holder').fadeOut(500, function()
+						{
+							$(this).text('').fadeIn(10,
+							function()
+							{
+								setTimeout(function()
+								{
+									$('.question_holder').fadeOut(10, function()
+									{
+										// start the video
+										wistiaEmbed.play();
+								
+										// show controls
+										$('.controls').stop().fadeIn();
+										$('.progc').stop().fadeIn();
+								
+										// hide controls
+										 $('#wistia_' + vid).on( "mouseenter", function()
+										 {
+											  $('.controls').stop().fadeIn();
+												$('.progc').stop().fadeIn();
+										 }).on( "mouseleave", function()
+										 {
+											 $('.controls').stop().fadeOut();
+												$('.progc').stop().fadeOut();
+										 });
+
+									});
+								}, 500);
+							});
+						});
+					}
+					else
+					{
+						var html = '';
+						if ($(question_text).val() == '')
+							$('ul.errors').append('<li>Question text cannot be blank.</li>'); 	
+						if ($(correct).val() == '')
+							$('ul.errors').append('<li>Correct answer text cannot be blank.</li>'); 
+						if (!any(incorrect, ''))
+							$('ul.errors').append('<li>There must be at least one non-blank incorrect answer.</li>');	
+					}
+				});		
+			}
+		});
+		
+		// clear local storage
+		window['localStorage'].clear();
+		
+		// initialize
+		quiz_data = [];
+		
+	})(window, $$, "n8q49kbnff");
+});
 </script>
 </html>
